@@ -12,6 +12,7 @@ type renderEntity struct {
 	*components.Position
 	*components.Size
 	*components.ShapeColor
+	*components.Shape
 }
 
 type RenderSystem struct {
@@ -31,12 +32,14 @@ func (s *RenderSystem) Add(
 	pos *components.Position,
 	size *components.Size,
 	sc *components.ShapeColor,
+	sh *components.Shape,
 ) {
 	s.entities[basic.ID()] = renderEntity{
 		basic,
 		pos,
 		size,
 		sc,
+		sh,
 	}
 }
 
@@ -50,6 +53,9 @@ func (s *RenderSystem) Remove(basic ecs.BasicEntity) {
 
 func (s *RenderSystem) handleRendering() {
 	for _, entity := range s.entities {
-		rl.DrawRectangleV(entity.Position.Vector2, entity.Size.Vector2, entity.ShapeColor.Color)
+		switch entity.Shape.Value {
+		case "Rect":
+			rl.DrawRectangleV(entity.Position.Vector2, entity.Size.Vector2, entity.ShapeColor.Color)
+		}
 	}
 }

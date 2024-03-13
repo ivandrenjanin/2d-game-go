@@ -21,3 +21,7 @@ type Speed struct {
 type ShapeColor struct {
 	rl.Color
 }
+
+type Shape struct {
+	Value string
+}
