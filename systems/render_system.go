@@ -54,8 +54,12 @@ func (s *RenderSystem) Remove(basic ecs.BasicEntity) {
 func (s *RenderSystem) handleRendering() {
 	for _, entity := range s.entities {
 		switch entity.Shape.Value {
-		case "Rect":
-			rl.DrawRectangleV(entity.Position.Vector2, entity.Size.Vector2, entity.ShapeColor.Color)
+		case "Player":
+			s.drawPlayer(entity)
 		}
 	}
+}
+
+func (s *RenderSystem) drawPlayer(entity renderEntity) {
+	rl.DrawRectangleV(entity.Position.Vector2, entity.Size.Vector2, entity.ShapeColor.Color)
 }

@@ -24,6 +24,6 @@ func NewPlayer() Player {
 		ShapeColor:  components.ShapeColor{Color: constants.SlateBlue},
 		Speed:       components.Speed{Value: 400},
 		Size:        components.Size{Vector2: rl.Vector2{X: 50, Y: 50}},
-		Shape:       components.Shape{Value: "Rect"},
+		Shape:       components.Shape{Value: "Player"},
 	}
 }

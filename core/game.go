@@ -15,16 +15,21 @@ func RunGame() {
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(constants.SCREEN_TARGET_FPS)
 
-	w := createWorld()
+	w, cam := createWorld()
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(constants.Violet)
 		rl.GetFrameTime()
 		// Game Logic Start
-		dt := rl.GetFrameTime()
-		w.Update(dt)
-
+		rl.BeginMode2D(*cam)
+		rl.PushMatrix()
+		rl.Translatef(0, 25*50, 0)
+		rl.Rotatef(90, 1, 0, 0)
+		rl.DrawGrid(100, 50)
+		rl.PopMatrix()
+		w.Update(rl.GetFrameTime())
+		rl.EndMode2D()
 		// Game Logic End
 		rl.EndDrawing()
 	}
