@@ -53,10 +53,9 @@ func (s *DebugInfoSystem) Update(dt float32) {
 		switch entity.Shape.Value {
 		case "Player":
 			s.drawPlayerDebugInfo(entity)
+			s.drawDebugInfoConsole(entity)
 		}
 	}
-
-	s.drawGeneralDebugInfo()
 }
 
 func (s *DebugInfoSystem) Remove(basic ecs.BasicEntity) {
@@ -69,15 +68,17 @@ func (s *DebugInfoSystem) handleDebugToggle() {
 	}
 }
 
-func (s *DebugInfoSystem) drawGeneralDebugInfo() {
+func (s *DebugInfoSystem) drawDebugInfoConsole(entity debugInfoEntity) {
 	if !s.debugInfo {
 		return
 	}
 
 	fps := rl.GetFPS()
+	posXInt := int32(entity.Position.X) - 375
+	posYInt := int32(entity.Position.Y) - 280
 
-	rl.DrawRectangle(5, 5, 150, 45, rl.RayWhite)
-	rl.DrawText(fmt.Sprintf("FPS: %d", fps), 8, 8, 20, rl.Black)
+	rl.DrawRectangle(posXInt, posYInt, 150, 45, rl.RayWhite)
+	rl.DrawText(fmt.Sprintf("FPS: %d", fps), posXInt+5, posYInt+5, 20, rl.Black)
 }
 
 func (s *DebugInfoSystem) drawPlayerDebugInfo(entity debugInfoEntity) {

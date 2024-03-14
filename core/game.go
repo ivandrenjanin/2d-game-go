@@ -15,6 +15,8 @@ func RunGame() {
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(constants.SCREEN_TARGET_FPS)
 
+	rl.SetWindowState(rl.FlagWindowResizable)
+
 	w, cam := createWorld()
 
 	for !rl.WindowShouldClose() {
