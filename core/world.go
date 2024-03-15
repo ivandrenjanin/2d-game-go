@@ -12,18 +12,19 @@ func createWorld(cam *rl.Camera2D) *ecs.World {
 	w := ecs.World{}
 
 	// Create Systems
+
 	pis := systems.NewPlayerInputSystem()
 	pms := systems.NewPlayerMovementSystem()
-	rs := systems.NewRenderSystem()
 	cs := systems.NewCameraSystem(cam)
+	rs := systems.NewRenderSystem()
 	dis := systems.NewDebugInfoSystem(cam)
 
 	// Add systems to world
-	w.AddSystem(&pis)
-	w.AddSystem(&pms)
-	w.AddSystem(&rs)
-	w.AddSystem(&dis)
-	w.AddSystem(&cs)
+	w.AddSystem(&pis) // 0
+	w.AddSystem(&pms) // 1
+	w.AddSystem(&cs)  // 2
+	w.AddSystem(&rs)  // 3
+	w.AddSystem(&dis) // 4
 
 	// Create Entities
 	p := entities.NewPlayer()
@@ -36,7 +37,7 @@ func createWorld(cam *rl.Camera2D) *ecs.World {
 		case *systems.PlayerMovementSystem:
 			sys.Add(p.BasicEntity, p.Velocity, p.Position, p.Speed)
 		case *systems.RenderSystem:
-			sys.Add(p.BasicEntity, p.Position, p.Size, p.ShapeColor, p.Shape)
+			sys.Add(p.BasicEntity, p.Position, p.Size, p.ShapeColor, p.Shape, p.Velocity, p.Outline)
 		case *systems.CameraSystem:
 			sys.Add(p.BasicEntity, p.Position, p.Shape)
 		case *systems.DebugInfoSystem:

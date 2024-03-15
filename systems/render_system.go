@@ -13,6 +13,8 @@ type renderEntity struct {
 	*components.Size
 	*components.ShapeColor
 	*components.Shape
+	*components.Velocity
+	*components.Outline
 }
 
 type RenderSystem struct {
@@ -21,6 +23,10 @@ type RenderSystem struct {
 
 func NewRenderSystem() RenderSystem {
 	return RenderSystem{}
+}
+
+func (s *RenderSystem) Priority() int {
+	return 3
 }
 
 func (s *RenderSystem) New(w *ecs.World) {
@@ -33,6 +39,8 @@ func (s *RenderSystem) Add(
 	size *components.Size,
 	sc *components.ShapeColor,
 	sh *components.Shape,
+	vel *components.Velocity,
+	ol *components.Outline,
 ) {
 	s.entities[basic.ID()] = renderEntity{
 		basic,
@@ -40,6 +48,8 @@ func (s *RenderSystem) Add(
 		size,
 		sc,
 		sh,
+		vel,
+		ol,
 	}
 }
 
@@ -69,47 +79,55 @@ func (s *RenderSystem) drawPlayer(entity renderEntity, dt float32) {
 	// Top Side Horizontal Outline
 	rl.DrawRectangleV(
 		pos,
-		rl.Vector2{X: entity.Size.X, Y: entity.Size.Y / 10},
-		rl.Lime,
+		entity.Outline.HorizontalSize,
+		entity.Outline.Color,
 	)
 
 	// Left Side Vertical Outline
 	rl.DrawRectangleV(
 		pos,
-		rl.Vector2{X: entity.Size.X / 10, Y: entity.Size.Y},
-		rl.Lime,
+		entity.Outline.VerticalSize,
+		entity.Outline.Color,
 	)
 
 	// Right Side Vertical Outline
 	rl.DrawRectangleV(
 		rl.Vector2Add(
-			rl.Vector2Subtract(pos, rl.Vector2{X: entity.Size.X / 10, Y: 0}),
+			rl.Vector2Subtract(pos, entity.Outline.SX),
 			rl.Vector2{X: entity.Size.X, Y: 0},
 		),
-		rl.Vector2{X: entity.Size.X / 10, Y: entity.Size.Y},
-		rl.Lime,
+		entity.Outline.VerticalSize,
+		entity.Outline.Color,
 	)
 
 	// Bottom Side Horizontal Outline
 	rl.DrawRectangleV(
 		rl.Vector2Add(
-			rl.Vector2Subtract(pos, rl.Vector2{X: 0, Y: entity.Size.Y / 10}),
+			rl.Vector2Subtract(pos, entity.Outline.SY),
 			rl.Vector2{X: 0, Y: entity.Size.Y},
 		),
-		rl.Vector2{X: entity.Size.X, Y: entity.Size.Y / 10},
-		rl.Lime,
+		entity.Outline.HorizontalSize,
+		entity.Outline.Color,
 	)
 
 	// Left Eye
-	rl.DrawCircleV(rl.Vector2Add(pos, rl.Vector2{X: 25, Y: 25}), 5, rl.Lime)
+	eyePosScale := rl.Vector2Scale(entity.Velocity.Vector2, 5)
+	rl.DrawCircleV(
+		rl.Vector2Add(
+			pos,
+			rl.Vector2Add(rl.Vector2{X: 25, Y: 25}, eyePosScale),
+		),
+		5,
+		entity.Outline.Color,
+	)
 
 	// Right Eye
 	rl.DrawCircleV(
 		rl.Vector2Add(
 			rl.Vector2Add(pos, rl.Vector2{X: entity.Size.X, Y: 0}),
-			rl.Vector2{X: -25, Y: 25},
+			rl.Vector2Add(rl.Vector2{X: -25, Y: 25}, eyePosScale),
 		),
 		5,
-		rl.Lime,
+		entity.Outline.Color,
 	)
 }

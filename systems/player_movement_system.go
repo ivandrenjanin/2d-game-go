@@ -22,6 +22,10 @@ func NewPlayerMovementSystem() PlayerMovementSystem {
 	return PlayerMovementSystem{}
 }
 
+func (s *PlayerMovementSystem) Priority() int {
+	return 1
+}
+
 func (s *PlayerMovementSystem) New(w *ecs.World) {
 	s.entities = make(map[uint64]playerMovementEntity)
 }

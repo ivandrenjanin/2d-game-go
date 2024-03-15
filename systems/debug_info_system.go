@@ -29,6 +29,10 @@ func NewDebugInfoSystem(camera *rl.Camera2D) DebugInfoSystem {
 	}
 }
 
+func (s *DebugInfoSystem) Priority() int {
+	return 4
+}
+
 func (s *DebugInfoSystem) New(w *ecs.World) {
 	s.entities = make(map[uint64]debugInfoEntity)
 }
@@ -52,12 +56,12 @@ func (s *DebugInfoSystem) Add(
 func (s *DebugInfoSystem) Update(dt float32) {
 	s.handleDebugToggle()
 
-	for _, entity := range s.entities {
-		switch entity.Shape.Value {
-		case "Player":
-			s.drawPlayerDebugInfo(entity)
-		}
-	}
+	// for _, entity := range s.entities {
+	// 	switch entity.Shape.Value {
+	// 	case "Player":
+	// 		s.drawPlayerDebugInfo(entity)
+	// 	}
+	// }
 
 	s.drawDebugInfoConsole(dt)
 }
@@ -88,7 +92,7 @@ func (s *DebugInfoSystem) drawDebugInfoConsole(dt float32) {
 		rl.GetFontDefault(),
 		fmt.Sprintf("FPS: %d", fps),
 		rl.Vector2Add(pos, rl.Vector2{X: 5, Y: 5}),
-		16,
+		25,
 		1,
 		rl.Black,
 	)

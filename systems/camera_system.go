@@ -24,6 +24,10 @@ func NewCameraSystem(camera *rl.Camera2D) CameraSystem {
 	}
 }
 
+func (s *CameraSystem) Priority() int {
+	return 2
+}
+
 func (s *CameraSystem) New(w *ecs.World) {
 	s.entities = make(map[uint64]cameraEntity)
 }

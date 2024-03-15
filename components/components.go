@@ -28,10 +28,8 @@ type Shape struct {
 
 type Outline struct {
 	ShapeColor
-	TopEdge        rl.Vector2
-	LeftEdge       rl.Vector2
-	BottomEdge     rl.Vector2
-	RightEdge      rl.Vector2
 	VerticalSize   rl.Vector2
 	HorizontalSize rl.Vector2
+	SX             rl.Vector2
+	SY             rl.Vector2
 }

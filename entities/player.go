@@ -15,6 +15,7 @@ type Player struct {
 	*components.Size
 	*components.ShapeColor
 	*components.Shape
+	*components.Outline
 }
 
 func NewPlayer() Player {
@@ -26,6 +27,20 @@ func NewPlayer() Player {
 	be := ecs.NewBasic()
 	vel := components.Velocity{}
 
+	sx := size.X / 10
+	sy := size.Y / 10
+	verticalSize := rl.Vector2{X: sx, Y: size.Y}
+	horizontalSize := rl.Vector2{X: size.X, Y: sy}
+	cl := rl.Lime
+
+	ol := components.Outline{
+		HorizontalSize: horizontalSize,
+		VerticalSize:   verticalSize,
+		ShapeColor:     components.ShapeColor{Color: cl},
+		SX:             rl.Vector2{X: sx, Y: 0},
+		SY:             rl.Vector2{X: 0, Y: sy},
+	}
+
 	return Player{
 		BasicEntity: &be,
 		ShapeColor:  &sc,
@@ -34,5 +49,6 @@ func NewPlayer() Player {
 		Position:    &pos,
 		Size:        &size,
 		Velocity:    &vel,
+		Outline:     &ol,
 	}
 }

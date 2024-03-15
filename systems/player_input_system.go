@@ -20,6 +20,10 @@ func NewPlayerInputSystem() PlayerInputSystem {
 	return PlayerInputSystem{}
 }
 
+func (s *PlayerInputSystem) Priority() int {
+	return 0
+}
+
 func (s *PlayerInputSystem) New(w *ecs.World) {
 	s.entities = make(map[uint64]playerInputEntity)
 }
