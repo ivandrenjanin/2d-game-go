@@ -41,7 +41,6 @@ func createWorld(cam *rl.Camera2D) *ecs.World {
 		case *systems.CameraSystem:
 			sys.Add(p.BasicEntity, p.Position, p.Shape)
 		case *systems.DebugInfoSystem:
-			sys.Add(p.BasicEntity, p.Position, p.Velocity, p.Size, p.Shape)
 		}
 	}
 
