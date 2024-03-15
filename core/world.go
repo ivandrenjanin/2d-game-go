@@ -32,15 +32,15 @@ func createWorld(cam *rl.Camera2D) *ecs.World {
 	for _, system := range w.Systems() {
 		switch sys := system.(type) {
 		case *systems.PlayerInputSystem:
-			sys.Add(&p.BasicEntity, &p.Velocity)
+			sys.Add(p.BasicEntity, p.Velocity)
 		case *systems.PlayerMovementSystem:
-			sys.Add(&p.BasicEntity, &p.Velocity, &p.Position, &p.Speed)
+			sys.Add(p.BasicEntity, p.Velocity, p.Position, p.Speed)
 		case *systems.RenderSystem:
-			sys.Add(&p.BasicEntity, &p.Position, &p.Size, &p.ShapeColor, &p.Shape)
+			sys.Add(p.BasicEntity, p.Position, p.Size, p.ShapeColor, p.Shape)
 		case *systems.CameraSystem:
-			sys.Add(&p.BasicEntity, &p.Position, &p.Shape)
+			sys.Add(p.BasicEntity, p.Position, p.Shape)
 		case *systems.DebugInfoSystem:
-			sys.Add(&p.BasicEntity, &p.Position, &p.Velocity, &p.Size, &p.Shape)
+			sys.Add(p.BasicEntity, p.Position, p.Velocity, p.Size, p.Shape)
 		}
 	}
 

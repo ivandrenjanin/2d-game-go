@@ -44,35 +44,38 @@ func (s *RenderSystem) Add(
 }
 
 func (s *RenderSystem) Update(dt float32) {
-	s.handleRendering()
+	s.handleRendering(dt)
 }
 
 func (s *RenderSystem) Remove(basic ecs.BasicEntity) {
 	delete(s.entities, basic.ID())
 }
 
-func (s *RenderSystem) handleRendering() {
+func (s *RenderSystem) handleRendering(dt float32) {
 	for _, entity := range s.entities {
 		switch entity.Shape.Value {
 		case "Player":
-			s.drawPlayer(entity)
+			s.drawPlayer(entity, dt)
 		}
 	}
 }
 
-func (s *RenderSystem) drawPlayer(entity renderEntity) {
+func (s *RenderSystem) drawPlayer(entity renderEntity, dt float32) {
 	// Main Body
-	rl.DrawRectangleV(entity.Position.Vector2, entity.Size.Vector2, rl.Black)
+	pos := entity.Position.Vector2
+
+	rl.DrawRectangleV(pos, entity.Size.Vector2, rl.Black)
+
 	// Top Side Horizontal Outline
 	rl.DrawRectangleV(
-		entity.Position.Vector2,
+		pos,
 		rl.Vector2{X: entity.Size.X, Y: entity.Size.Y / 10},
 		rl.Lime,
 	)
 
 	// Left Side Vertical Outline
 	rl.DrawRectangleV(
-		entity.Position.Vector2,
+		pos,
 		rl.Vector2{X: entity.Size.X / 10, Y: entity.Size.Y},
 		rl.Lime,
 	)
@@ -80,7 +83,7 @@ func (s *RenderSystem) drawPlayer(entity renderEntity) {
 	// Right Side Vertical Outline
 	rl.DrawRectangleV(
 		rl.Vector2Add(
-			rl.Vector2Subtract(entity.Position.Vector2, rl.Vector2{X: entity.Size.X / 10, Y: 0}),
+			rl.Vector2Subtract(pos, rl.Vector2{X: entity.Size.X / 10, Y: 0}),
 			rl.Vector2{X: entity.Size.X, Y: 0},
 		),
 		rl.Vector2{X: entity.Size.X / 10, Y: entity.Size.Y},
@@ -90,7 +93,7 @@ func (s *RenderSystem) drawPlayer(entity renderEntity) {
 	// Bottom Side Horizontal Outline
 	rl.DrawRectangleV(
 		rl.Vector2Add(
-			rl.Vector2Subtract(entity.Position.Vector2, rl.Vector2{X: 0, Y: entity.Size.Y / 10}),
+			rl.Vector2Subtract(pos, rl.Vector2{X: 0, Y: entity.Size.Y / 10}),
 			rl.Vector2{X: 0, Y: entity.Size.Y},
 		),
 		rl.Vector2{X: entity.Size.X, Y: entity.Size.Y / 10},
@@ -98,12 +101,12 @@ func (s *RenderSystem) drawPlayer(entity renderEntity) {
 	)
 
 	// Left Eye
-	rl.DrawCircleV(rl.Vector2Add(entity.Position.Vector2, rl.Vector2{X: 25, Y: 25}), 5, rl.Lime)
+	rl.DrawCircleV(rl.Vector2Add(pos, rl.Vector2{X: 25, Y: 25}), 5, rl.Lime)
 
 	// Right Eye
 	rl.DrawCircleV(
 		rl.Vector2Add(
-			rl.Vector2Add(entity.Position.Vector2, rl.Vector2{X: entity.Size.X, Y: 0}),
+			rl.Vector2Add(pos, rl.Vector2{X: entity.Size.X, Y: 0}),
 			rl.Vector2{X: -25, Y: 25},
 		),
 		5,

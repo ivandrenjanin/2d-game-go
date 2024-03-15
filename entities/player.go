@@ -8,21 +8,31 @@ import (
 )
 
 type Player struct {
-	ecs.BasicEntity
-	components.Position
-	components.Velocity
-	components.Speed
-	components.Size
-	components.ShapeColor
-	components.Shape
+	*ecs.BasicEntity
+	*components.Position
+	*components.Velocity
+	*components.Speed
+	*components.Size
+	*components.ShapeColor
+	*components.Shape
 }
 
 func NewPlayer() Player {
+	pos := components.Position{Vector2: rl.Vector2{X: 0, Y: 0}}
+	size := components.Size{Vector2: rl.Vector2{X: 64, Y: 64}}
+	sc := components.ShapeColor{Color: rl.Red}
+	spd := components.Speed{Value: 400}
+	sp := components.Shape{Value: "Player"}
+	be := ecs.NewBasic()
+	vel := components.Velocity{}
+
 	return Player{
-		BasicEntity: ecs.NewBasic(),
-		ShapeColor:  components.ShapeColor{Color: rl.Red},
-		Speed:       components.Speed{Value: 400},
-		Size:        components.Size{Vector2: rl.Vector2{X: 64, Y: 64}},
-		Shape:       components.Shape{Value: "Player"},
+		BasicEntity: &be,
+		ShapeColor:  &sc,
+		Speed:       &spd,
+		Shape:       &sp,
+		Position:    &pos,
+		Size:        &size,
+		Velocity:    &vel,
 	}
 }
