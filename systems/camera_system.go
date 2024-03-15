@@ -5,7 +5,6 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 
 	"github.com/ivandrenjanin/2d-game-go/components"
-	"github.com/ivandrenjanin/2d-game-go/constants"
 )
 
 type cameraEntity struct {
@@ -16,24 +15,17 @@ type cameraEntity struct {
 
 type CameraSystem struct {
 	entities map[uint64]cameraEntity
-	Camera   rl.Camera2D
+	Camera   *rl.Camera2D
 }
 
-func NewCameraSystem() CameraSystem {
-	return CameraSystem{}
+func NewCameraSystem(camera *rl.Camera2D) CameraSystem {
+	return CameraSystem{
+		Camera: camera,
+	}
 }
 
 func (s *CameraSystem) New(w *ecs.World) {
 	s.entities = make(map[uint64]cameraEntity)
-	s.Camera = rl.NewCamera2D(
-		rl.Vector2{
-			X: float32(constants.SCREEN_DEFAULT_WIDTH) / 2,
-			Y: float32(constants.SCREEN_DEFAULT_HEIGHT) / 2,
-		},
-		rl.Vector2{},
-		0,
-		1,
-	)
 }
 
 func (s *CameraSystem) Add(

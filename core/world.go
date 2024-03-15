@@ -8,15 +8,15 @@ import (
 	"github.com/ivandrenjanin/2d-game-go/systems"
 )
 
-func createWorld() (*ecs.World, *rl.Camera2D) {
+func createWorld(cam *rl.Camera2D) *ecs.World {
 	w := ecs.World{}
 
 	// Create Systems
 	pis := systems.NewPlayerInputSystem()
 	pms := systems.NewPlayerMovementSystem()
 	rs := systems.NewRenderSystem()
+	cs := systems.NewCameraSystem(cam)
 	dis := systems.NewDebugInfoSystem()
-	cs := systems.NewCameraSystem()
 
 	// Add systems to world
 	w.AddSystem(&pis)
@@ -44,5 +44,5 @@ func createWorld() (*ecs.World, *rl.Camera2D) {
 		}
 	}
 
-	return &w, &cs.Camera
+	return &w
 }

@@ -53,9 +53,7 @@ func (s *PlayerMovementSystem) handleMovement(dt float32) {
 		pos := entity.Position.Vector2
 		vel := entity.Velocity.Vector2
 		spd := entity.Speed.Value
-
 		pos = rl.Vector2Add(pos, rl.Vector2Scale(vel, spd*dt))
-
 		entity.Position.Vector2 = pos
 	}
 }
