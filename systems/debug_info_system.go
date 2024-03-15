@@ -20,10 +20,13 @@ type debugInfoEntity struct {
 type DebugInfoSystem struct {
 	entities  map[uint64]debugInfoEntity
 	debugInfo bool
+	Camera    *rl.Camera2D
 }
 
-func NewDebugInfoSystem() DebugInfoSystem {
-	return DebugInfoSystem{}
+func NewDebugInfoSystem(camera *rl.Camera2D) DebugInfoSystem {
+	return DebugInfoSystem{
+		Camera: camera,
+	}
 }
 
 func (s *DebugInfoSystem) New(w *ecs.World) {
@@ -53,9 +56,10 @@ func (s *DebugInfoSystem) Update(dt float32) {
 		switch entity.Shape.Value {
 		case "Player":
 			s.drawPlayerDebugInfo(entity)
-			s.drawDebugInfoConsole(entity)
 		}
 	}
+
+	s.drawDebugInfoConsole(dt)
 }
 
 func (s *DebugInfoSystem) Remove(basic ecs.BasicEntity) {
@@ -68,17 +72,26 @@ func (s *DebugInfoSystem) handleDebugToggle() {
 	}
 }
 
-func (s *DebugInfoSystem) drawDebugInfoConsole(entity debugInfoEntity) {
+func (s *DebugInfoSystem) drawDebugInfoConsole(dt float32) {
 	if !s.debugInfo {
 		return
 	}
 
 	fps := rl.GetFPS()
-	posXInt := int32(entity.Position.X) - 375
-	posYInt := int32(entity.Position.Y) - 280
+	pos := rl.Vector2Subtract(
+		rl.Vector2{X: s.Camera.Target.X, Y: s.Camera.Target.Y},
+		rl.Vector2{X: s.Camera.Offset.X, Y: s.Camera.Offset.Y},
+	)
 
-	rl.DrawRectangle(posXInt, posYInt, 150, 45, rl.RayWhite)
-	rl.DrawText(fmt.Sprintf("FPS: %d", fps), posXInt+5, posYInt+5, 20, rl.Black)
+	rl.DrawRectangleV(pos, rl.Vector2{X: 150, Y: 50}, rl.RayWhite)
+	rl.DrawTextEx(
+		rl.GetFontDefault(),
+		fmt.Sprintf("FPS: %d", fps),
+		rl.Vector2Add(pos, rl.Vector2{X: 5, Y: 5}),
+		16,
+		1,
+		rl.Black,
+	)
 }
 
 func (s *DebugInfoSystem) drawPlayerDebugInfo(entity debugInfoEntity) {

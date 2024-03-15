@@ -16,7 +16,7 @@ func createWorld(cam *rl.Camera2D) *ecs.World {
 	pms := systems.NewPlayerMovementSystem()
 	rs := systems.NewRenderSystem()
 	cs := systems.NewCameraSystem(cam)
-	dis := systems.NewDebugInfoSystem()
+	dis := systems.NewDebugInfoSystem(cam)
 
 	// Add systems to world
 	w.AddSystem(&pis)
