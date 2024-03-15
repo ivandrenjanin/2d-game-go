@@ -55,10 +55,16 @@ func RunGame() {
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.Green)
+		rl.ClearBackground(rl.Black)
 		// Game Logic Start
 		rl.BeginMode2D(cam)
 
+		cam.Zoom += rl.GetMouseWheelMove() * 0.05
+		if cam.Zoom > 3.0 {
+			cam.Zoom = 3.0
+		} else if cam.Zoom < 1.0 {
+			cam.Zoom = 1.0
+		}
 		rl.DrawRectangle(worldX, worldY, levelWidth, levelHeight, bgColor)
 		w.Update(rl.GetFrameTime())
 		rl.EndMode2D()
