@@ -6,25 +6,26 @@ import (
 
 	"github.com/ivandrenjanin/2d-game-go/entities"
 	"github.com/ivandrenjanin/2d-game-go/systems"
+	tilestacker "github.com/ivandrenjanin/2d-game-go/tile_stacker"
 )
 
-func createWorld(cam *rl.Camera2D) *ecs.World {
+func createWorld(cam *rl.Camera2D, project *tilestacker.Project) *ecs.World {
 	w := ecs.World{}
-
 	// Create Systems
 
 	pis := systems.NewPlayerInputSystem()
 	pms := systems.NewPlayerMovementSystem()
 	cs := systems.NewCameraSystem(cam)
-	rs := systems.NewRenderSystem()
 	dis := systems.NewDebugInfoSystem(cam)
+	rs := systems.NewRenderSystem(project)
 
 	// Add systems to world
+
 	w.AddSystem(&pis) // 0
 	w.AddSystem(&pms) // 1
 	w.AddSystem(&cs)  // 2
-	w.AddSystem(&rs)  // 3
-	w.AddSystem(&dis) // 4
+	w.AddSystem(&dis) // 3
+	w.AddSystem(&rs)  // 4
 
 	// Create Entities
 	p := entities.NewPlayer()

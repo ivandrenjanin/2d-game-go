@@ -21,7 +21,7 @@ func NewDebugInfoSystem(camera *rl.Camera2D) DebugInfoSystem {
 }
 
 func (s *DebugInfoSystem) Priority() int {
-	return 4
+	return 3
 }
 
 func (s *DebugInfoSystem) Add() {

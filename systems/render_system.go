@@ -5,6 +5,7 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 
 	"github.com/ivandrenjanin/2d-game-go/components"
+	tilestacker "github.com/ivandrenjanin/2d-game-go/tile_stacker"
 )
 
 type renderEntity struct {
@@ -19,14 +20,17 @@ type renderEntity struct {
 
 type RenderSystem struct {
 	entities map[uint64]renderEntity
+	project  *tilestacker.Project
 }
 
-func NewRenderSystem() RenderSystem {
-	return RenderSystem{}
+func NewRenderSystem(project *tilestacker.Project) RenderSystem {
+	return RenderSystem{
+		project: project,
+	}
 }
 
 func (s *RenderSystem) Priority() int {
-	return 3
+	return 4
 }
 
 func (s *RenderSystem) New(w *ecs.World) {
@@ -54,26 +58,39 @@ func (s *RenderSystem) Add(
 }
 
 func (s *RenderSystem) Update(dt float32) {
-	s.handleRendering(dt)
+	s.handleRendering()
 }
 
 func (s *RenderSystem) Remove(basic ecs.BasicEntity) {
 	delete(s.entities, basic.ID())
 }
 
-func (s *RenderSystem) handleRendering(dt float32) {
+func (s *RenderSystem) handleRendering() {
+	s.drawWorld()
 	for _, entity := range s.entities {
 		switch entity.Shape.Value {
 		case "Player":
-			s.drawPlayer(entity, dt)
+			s.drawPlayer(entity)
+		}
+	}
+	s.drawLevel()
+}
+
+func (s *RenderSystem) drawWorld() {
+	rl.DrawRectangleV(s.project.Levels[0].Position, s.project.Levels[0].Size, s.project.Color)
+}
+
+func (s *RenderSystem) drawLevel() {
+	for _, layer := range s.project.Levels[0].Layers {
+		for _, tile := range layer.Tiles {
+			rl.DrawRectangleV(tile.Position, tile.Size, rl.Red)
 		}
 	}
 }
 
-func (s *RenderSystem) drawPlayer(entity renderEntity, dt float32) {
+func (s *RenderSystem) drawPlayer(entity renderEntity) {
 	// Main Body
 	pos := entity.Position.Vector2
-
 	rl.DrawRectangleV(pos, entity.Size.Vector2, rl.Black)
 
 	// Top Side Horizontal Outline

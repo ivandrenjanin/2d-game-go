@@ -49,6 +49,7 @@ func (s *CameraSystem) Update(dt float32) {
 		switch entity.Shape.Value {
 		case "Player":
 			s.handleCamera(entity)
+			s.handleZoom()
 		}
 	}
 }
@@ -59,4 +60,13 @@ func (s *CameraSystem) Remove(basic ecs.BasicEntity) {
 
 func (s *CameraSystem) handleCamera(entity cameraEntity) {
 	s.Camera.Target = rl.Vector2Add(entity.Position.Vector2, rl.Vector2{X: 20, Y: 20})
+}
+
+func (s *CameraSystem) handleZoom() {
+	s.Camera.Zoom += rl.GetMouseWheelMove() * 0.05
+	if s.Camera.Zoom > 3.0 {
+		s.Camera.Zoom = 3.0
+	} else if s.Camera.Zoom < 1.0 {
+		s.Camera.Zoom = 1.0
+	}
 }
